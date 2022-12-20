@@ -43,7 +43,7 @@
   var twoDaysFromNow = new Date(currentDate.getFullYear() + 1, 0, 1);
 
   // Set up FlipDown
-  var flipdown = new FlipDown(twoDaysFromNow)
+  var flipdown = new FlipDown(twoDaysFromNow.getTime())
 
     // Start the countdown
     .start()
