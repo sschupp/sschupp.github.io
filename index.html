@@ -138,67 +138,37 @@
   <img id="logo" src="logo.png" alt="Logo">
   <div id="container">
     <h1>Bald beginnt das Feierjahr</h1>
-    <div class="clock">
     
-	<div class="digit tenday">
-		<span class="base"></span>
-		<div class="flap over front"></div>
-		<div class="flap over back"></div>
-		<div class="flap under"></div>
-	</div>
-      
-	<div class="digit day">
-		<span class="base"></span>
-		<div class="flap over front"></div>
-		<div class="flap over back"></div>
-		<div class="flap under"></div>
-	</div>
-      
-	<div class="digit tenhour">
-		<span class="base"></span>
-		<div class="flap over front"></div>
-		<div class="flap over back"></div>
-		<div class="flap under"></div>
-	</div>
-
-	<div class="digit hour">
-		<span class="base"></span>
-		<div class="flap over front"></div>
-		<div class="flap over back"></div>
-		<div class="flap under"></div>
-	</div>
-	
-	<div class="digit tenmin">
-		<span class="base"></span>
-		<div class="flap over front"></div>
-		<div class="flap over back"></div>
-		<div class="flap under"></div>
-	</div>
-
-	<div class="digit min">
-		<span class="base"></span>
-		<div class="flap over front"></div>
-		<div class="flap over back"></div>
-		<div class="flap under"></div>
-	</div>
-	
-	<div class="digit tensec">
-		<span class="base"></span>
-		<div class="flap over front"></div>
-		<div class="flap over back"></div>
-		<div class="flap under"></div>
-	</div>
-
-	<div class="digit sec">
-		<span class="base"></span>
-		<div class="flap over front"></div>
-		<div class="flap over back"></div>
-		<div class="flap under"></div>
-	</div>
-	
-</div>
+    <div id="flipdown" class="flipdown"></div>
   </div>
   <script>
+	  document.addEventListener('DOMContentLoaded', () => {
+
+  // Unix timestamp (in seconds) to count down to
+  var twoDaysFromNow = new Date(currentDate.getFullYear() + 1, 0, 1);
+
+  // Set up FlipDown
+  var flipdown = new FlipDown(twoDaysFromNow)
+
+    // Start the countdown
+    .start()
+
+    // Do something when the countdown ends
+    .ifEnded(() => {
+      console.log('The countdown has ended!');
+    });
+
+  // Toggle theme
+  var interval = setInterval(() => {
+    let body = document.body;
+    body.classList.toggle('light-theme');
+    body.querySelector('#flipdown').classList.toggle('flipdown__theme-dark');
+    body.querySelector('#flipdown').classList.toggle('flipdown__theme-light');
+  }, 5000);
+  
+  var ver = document.getElementById('ver');
+  ver.innerHTML = flipdown.version;
+});
     // Funktion, die den Timer aktualisiert
     function updateTimer() {
       // Hole das aktuelle Datum
