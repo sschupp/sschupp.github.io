@@ -1,29 +1,36 @@
-<!doctype html>
-<html lang="de">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title></title>
-    
-    <link rel="stylesheet" href="https://fonts.googleapis.com/fonts">
-    <link rel)"stylesheet" href="css/style.css">
-  </head>
-  
-  <body>
-    <div class="bgimg">
-      <div class="topleft">
-        <p>Logo</p>
-      </div>
-      <div class="middle">
-        <h1>COMING SOON</h1>
-        <hr>
-        <p>01.01.2023</p>
-      </div>
-      <div class="bottomleft">
-        <p>Some text</p>
-      </div>
-    </div>
-  </body>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Es kommt bald was</title>
+</head>
+<body>
+  <h1>Es kommt bald was</h1>
+  <p>Der Countdown bis zum neuen Jahr läuft:</p>
+  <p id="timer"></p>
+  <script>
+    // Funktion, die den Timer aktualisiert
+    function updateTimer() {
+      // Hole das aktuelle Datum
+      var currentDate = new Date();
+      // Setze das neue Jahr auf den 1. Januar des nächsten Jahres
+      var newYear = new Date(currentDate.getFullYear() + 1, 0, 1);
+      // Berechne die verbleibende Zeit bis zum neuen Jahr in Millisekunden
+      var timeLeft = newYear - currentDate;
+      // Konvertiere die verbleibende Zeit in Sekunden
+      var seconds = Math.floor(timeLeft / 1000);
+      // Berechne die verbleibende Zeit in Tagen, Stunden, Minuten und Sekunden
+      var days = Math.floor(seconds / 86400); // 86400 Sekunden sind ein Tag
+      seconds = seconds % 86400;
+      var hours = Math.floor(seconds / 3600);
+      seconds = seconds % 3600;
+      var minutes = Math.floor(seconds / 60);
+      seconds = seconds % 60;
+      // Aktualisiere den Timer im HTML-Dokument
+      document.getElementById("timer").innerHTML = days + " Tage " + hours + " Stunden " + minutes + " Minuten " + seconds + " Sekunden";
+    }
+
+    // Rufe die updateTimer()-Funktion alle 1000 Millisekunden (1 Sekunde) auf
+    setInterval(updateTimer, 1000);
+  </script>
+</body>
 </html>
