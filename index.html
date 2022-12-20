@@ -2,7 +2,7 @@
 <html>
 <head>
   <title>Es kommt bald was</title>
-    <style>
+  <style>
     body {
       background-color: #f1f1f1;
       font-family: sans-serif;
@@ -12,6 +12,14 @@
       position: absolute;
       top: 20px;
       left: 20px;
+      width: 10%;
+    }
+    #container {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
     h1 {
       font-size: 48px;
       color: #333;
@@ -30,9 +38,11 @@
 </head>
 <body>
   <img id="logo" src="logo.png" alt="Logo">
-  <h1>Es kommt bald was</h1>
-  <p>Der Countdown bis zum neuen Jahr läuft:</p>
-  <p id="timer"></p>
+  <div id="container">
+    <h1>Es kommt bald was</h1>
+    <p>Der Countdown bis zum neuen Jahr läuft:</p>
+    <p id="timer"></p>
+  </div>
   <script>
     // Funktion, die den Timer aktualisiert
     function updateTimer() {
@@ -54,8 +64,8 @@
       // Aktualisiere den Timer im HTML-Dokument
       document.getElementById("timer").innerHTML = days + " Tage " + hours + " Stunden " + minutes + " Minuten " + seconds + " Sekunden";
     }
+    // Rufe die updateTimer()-Funktion alle 1000 Millisekunden (1 Sekunde)
 
-    // Rufe die updateTimer()-Funktion alle 1000 Millisekunden (1 Sekunde) auf
     setInterval(updateTimer, 1000);
   </script>
 </body>
