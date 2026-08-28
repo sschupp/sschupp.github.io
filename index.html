@@ -1,39 +1,445 @@
 <!DOCTYPE html>
-<html>
+<html lang="de">
 <head>
-  <title>It's Coming Soon</title>
-  <style>    
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>An Invitation</title>
+  <!-- Google Fonts: Modern & Editorial -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <!-- Confetti Library -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  
+  <style>
+    :root {
+      --bg: #09090b;
+      --card-bg: rgba(18, 18, 22, 0.85);
+      --border: rgba(255, 255, 255, 0.08);
+      --border-focus: rgba(226, 201, 169, 0.5);
+      --text: #f4f4f5;
+      --text-muted: #a1a1aa;
+      --accent: #e2c9a9; /* Soft Champagne/Sand */
+      --accent-hover: #f0dcbf;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
     body {
-      background-image: url("bg.png");
-      font-family: sans-serif;
+      background-color: var(--bg);
+      background-image: 
+        radial-gradient(at 50% 0%, rgba(226, 201, 169, 0.05) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(255, 255, 255, 0.02) 0px, transparent 50%);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 24px;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .card {
+      background: var(--card-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--border);
+      padding: 40px 32px;
+      border-radius: 24px;
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+      width: 100%;
+      max-width: 400px;
       text-align: center;
+      position: relative;
     }
-    #logo {
-      position: absolute;
-      top: 20px;
-      left: 20px;
-      width: 5%;
+
+    .step {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
     }
-    #container {
-      position: absolute;
-      top: 15%;
-      left: 50%;
-      transform: translate(-50%, -50%);
+
+    .step.active {
+      display: flex;
     }
+
+    .header-tag {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--accent);
+      font-weight: 600;
+    }
+
     h1 {
-      font-size: 96px;
-      color: #333;
-      margin: 20px 0;
+      font-size: 1.4rem;
+      font-weight: 500;
+      line-height: 1.4;
+      color: var(--text);
+      letter-spacing: -0.02em;
+    }
+
+    p.subtitle {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin-top: -12px;
+    }
+
+    /* Buttons */
+    .btn-group {
+      display: flex;
+      gap: 12px;
+      width: 100%;
+      justify-content: center;
+      align-items: center;
+      min-height: 50px;
+      margin-top: 8px;
+    }
+
+    button {
+      padding: 14px 24px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #09090b;
+      width: 100%;
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-hover);
+      transform: translateY(-1px);
+    }
+
+    .btn-yes {
+      background: var(--accent);
+      color: #09090b;
+      white-space: nowrap;
+    }
+
+    .btn-yes:hover {
+      background: var(--accent-hover);
+    }
+
+    .btn-no {
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+      position: relative;
+      white-space: nowrap;
+    }
+
+    /* Form Elements */
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      text-align: left;
+      width: 100%;
+      gap: 8px;
+    }
+
+    label {
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      letter-spacing: 0.5px;
+    }
+
+    input[type="date"],
+    input[type="time"] {
+      width: 100%;
+      padding: 14px 16px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      font-size: 0.95rem;
+      color: var(--text);
+      outline: none;
+      color-scheme: dark;
+      transition: border-color 0.2s;
+    }
+
+    input:focus {
+      border-color: var(--border-focus);
+    }
+
+    /* Radio Group Modern */
+    .radio-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      width: 100%;
+    }
+
+    .radio-label {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 16px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      color: var(--text);
+      transition: all 0.2s ease;
+    }
+
+    .radio-label:has(input:checked) {
+      border-color: var(--accent);
+      background: rgba(226, 201, 169, 0.05);
+    }
+
+    .radio-label input {
+      accent-color: var(--accent);
+    }
+
+    /* Chips */
+    .food-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: flex-start;
+    }
+
+    .chip {
+      padding: 10px 16px;
+      font-size: 0.85rem;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .chip:hover {
+      border-color: rgba(255, 255, 255, 0.2);
+      color: var(--text);
+    }
+
+    .chip.selected {
+      background: var(--accent);
+      color: #09090b;
+      border-color: var(--accent);
+      font-weight: 500;
+    }
+
+    /* Visual Accent Line */
+    .divider {
+      width: 40px;
+      height: 2px;
+      background: var(--accent);
+      opacity: 0.4;
+      border-radius: 2px;
+      margin: 4px 0;
     }
   </style>
 </head>
 <body>
-  <img id="logo" src="logo.png" alt="Logo">
-  <div id="container">
-    <h1>Bald beginnt das Feierjahr</h1>
+
+  <div class="card">
+    
+    <!-- Schritt 1: Einladung -->
+    <div class="step active" id="step1">
+      <span class="header-tag">Private Invitation</span>
+      <div class="divider"></div>
+      <h1>Darf ich dich auf ein gutes Date ausführen?</h1>
+      
+      <div class="btn-group">
+        <button class="btn-yes" id="yesBtn" onclick="nextStep(2)">Sehr gerne</button>
+        <button class="btn-no" id="noBtn">Nein</button>
+      </div>
+    </div>
+
+    <!-- Schritt 2: Datum & Uhrzeit -->
+    <div class="step" id="step2">
+      <span class="header-tag">Timing</span>
+      <h1>Wann passt es dir am besten?</h1>
+      
+      <div class="form-group">
+        <label for="date">DATUM</label>
+        <input type="date" id="date" required>
+      </div>
+
+      <div class="form-group">
+        <label for="time">UHRZEIT</label>
+        <input type="time" id="time" required>
+      </div>
+
+      <button class="btn-primary" onclick="validateStep2()">Weiter ➔</button>
+    </div>
+
+    <!-- Schritt 3: Ablauf & Essen (Alkoholfrei & Modern) -->
+    <div class="step" id="step3">
+      <span class="header-tag">Preferences</span>
+      <h1>Worauf hast du Lust?</h1>
+      
+      <div class="form-group">
+        <label>DER AUFTAKT</label>
+        <div class="radio-group">
+          <label class="radio-label">
+            <input type="radio" name="startType" value="Café & Lounge" checked>
+            Entspannter Start im Café / Lounge ☕
+          </label>
+          <label class="radio-label">
+            <input type="radio" name="startType" value="Direkt Dinner">
+            Direkt zum Abendessen 🍽️
+          </label>
+          <label class="radio-label">
+            <input type="radio" name="startType" value="Late Night & Dessert">
+            Late-Night Bites & Dessert 🌙
+          </label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>KULINARISCHE RICHTUNG</label>
+        <div class="food-chips">
+          <button type="button" class="chip" onclick="toggleChip(this, 'Sushi & Asian Fusion')">Sushi & Fusion</button>
+          <button type="button" class="chip" onclick="toggleChip(this, 'Modern Italian')">Modern Italian</button>
+          <button type="button" class="chip" onclick="toggleChip(this, 'Fine Dining')">Fine Dining</button>
+          <button type="button" class="chip" onclick="toggleChip(this, 'Tapas & Small Plates')">Tapas</button>
+          <button type="button" class="chip" onclick="toggleChip(this, 'Überrasche mich')">Überrasche mich</button>
+        </div>
+      </div>
+
+      <button class="btn-primary" style="margin-top: 8px;" onclick="submitData()">Bestätigen ✨</button>
+    </div>
+
+    <!-- Schritt 4: Abschluss -->
+    <div class="step" id="step4">
+      <span class="header-tag">Confirmed</span>
+      <div class="divider"></div>
+      <h1>Perfekt. Ich kümmere mich um den Rest.</h1>
+      <p class="subtitle">Ich melde mich in Kürze bei dir mit den Details.</p>
+    </div>
+
   </div>
+
   <script>
-    </script>
-  <script src="https://pbutcher.uk/flipdown/js/flipdown/flipdown.js"></script>
+    // Min-Datum auf heute setzen
+    const dateInput = document.getElementById('date');
+    dateInput.min = new Date().toISOString().split('T')[0];
+
+    // Subtiles Weglaufen & Vergrößern
+    const noBtn = document.getElementById('noBtn');
+    const yesBtn = document.getElementById('yesBtn');
+    
+    const noTexts = [
+      "Sicher?",
+      "Überleg's dir noch mal",
+      "Keine Option 😉",
+      "Versuch's gar nicht erst",
+      "Kein Entkommen"
+    ];
+    let textIndex = 0;
+    let yesScale = 1;
+
+    function moveButton() {
+      const btnRect = noBtn.getBoundingClientRect();
+      const maxX = window.innerWidth - btnRect.width - 24;
+      const maxY = window.innerHeight - btnRect.height - 24;
+
+      const randomX = Math.max(16, Math.floor(Math.random() * maxX));
+      const randomY = Math.max(16, Math.floor(Math.random() * maxY));
+
+      noBtn.style.position = 'fixed';
+      noBtn.style.left = `${randomX}px`;
+      noBtn.style.top = `${randomY}px`;
+
+      // Text elegant wechseln
+      noBtn.innerText = noTexts[textIndex % noTexts.length];
+      textIndex++;
+
+      // Ja-Button wachsen lassen
+      yesScale += 0.06;
+      yesBtn.style.transform = `scale(${yesScale})`;
+    }
+
+    noBtn.addEventListener('mouseover', moveButton);
+    noBtn.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      moveButton();
+    });
+
+    // Multi-Select Food Chips
+    const selectedFoods = new Set();
+    function toggleChip(element, foodValue) {
+      if (selectedFoods.has(foodValue)) {
+        selectedFoods.delete(foodValue);
+        element.classList.remove('selected');
+      } else {
+        selectedFoods.add(foodValue);
+        element.classList.add('selected');
+      }
+    }
+
+    // Step-Wechsel
+    function nextStep(stepNumber) {
+      document.querySelectorAll('.step').forEach(step => step.classList.remove('active'));
+      document.getElementById(`step${stepNumber}`).classList.add('active');
+    }
+
+    function validateStep2() {
+      if (!dateInput.value || !document.getElementById('time').value) {
+        alert('Bitte wähle ein Datum und eine Uhrzeit aus.');
+        return;
+      }
+      nextStep(3);
+    }
+
+    // Daten versenden
+    async function submitData() {
+      const foodArray = Array.from(selectedFoods);
+      const food = foodArray.length > 0 ? foodArray.join(', ') : 'Überraschung';
+
+      // HIER DEINE E-MAIL EINTRAGEN
+      const EMAIL = "sschupp97@gmail.com";
+
+      try {
+        await fetch(`https://formsubmit.co/ajax/${EMAIL}`, {
+          method: "POST",
+          headers: { 
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify({
+            _subject: "Neue Date-Zusage erhalten!",
+            Datum: dateInput.value,
+            Uhrzeit: document.getElementById('time').value,
+            Auftakt: document.querySelector('input[name="startType"]:checked').value,
+            Essenswunsch: food
+          })
+        });
+      } catch (e) {
+        console.error("Fehler beim Senden:", e);
+      }
+
+      // Dezent-elegantes Konfetti (Champagner & Sand-Töne)
+      confetti({
+        particleCount: 70,
+        spread: 60,
+        origin: { y: 0.65 },
+        colors: ['#e2c9a9', '#ffffff', '#a1a1aa']
+      });
+
+      nextStep(4);
+    }
+  </script>
 </body>
 </html>
